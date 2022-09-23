@@ -19,3 +19,47 @@ header {
     flex-wrap: wrap;
     justify-content: space-between;
 }
+
+.city-form-container {
+    margin-bottom: 10px;
+}
+
+#city-name {
+    height: 35px;
+}
+
+input:focus, textarea:focus, select:focus {
+    outline-offset: 0px !important;
+    outline: none !important;
+}
+
+#city-name input:focus {
+    box-shadow: 0 0 10px dodgerblue !important;
+    -moz-box-shadow: 0 0 35px green !important;
+    -webkit-box-shadow: 0 0 35px green !important;
+}
+
+.form-input {
+    flex-grow: 1;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.btn {
+    flex-grow: 2;
+    font-size: 1.5em;
+    text-decoration: none;
+    border: none;
+    outline: none;
+    background-color: dodgerblue;
+    color: white;
+    margin-bottom: 6px;
+}
+
+.fa-search:hover {
+    color: #FFD700;
+}
+
+.list-group {
+    margin-bottom: 10px;
+}

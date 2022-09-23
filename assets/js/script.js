@@ -1,6 +1,6 @@
 var APIKey = "f04790a4f07975aa0a32273581fb57ac";
 var city;
-var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
+var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey + "&units=metric";
 
 // Makes call to the API data => Keep to use later
 // fetch(queryURL)
@@ -49,3 +49,54 @@ leftColumnEl.appendChild(citiesContainerEl);
 
 // Find list div container
 let citiesListContainerEl = document.querySelector("#dyn-cities-list");
+
+
+var populateSavedCities = function () {
+    let citiesLocalStorage = JSON.parse(localStorage.getItem("savedCities"));
+
+    let cityExist = 0;
+
+    if (citiesLocalStorage === null) {
+        console.log("No cities to add");
+    } else {
+        $(".list-group-item").remove();
+
+        for (i = 0; i < citiesLocalStorage.length; i++) {
+            let cityNameEl = document.createElement("a");
+            let splitCityText = "";
+            cityNameEl.setAttribute("href", "#");
+            cityNameEl.setAttribute("data-city", citiesLocalStorage[i]);
+            cityNameEl.setAttribute("id", citiesLocalStorage[i]);
+            cityNameEl.setAttribute("role", "button");
+            cityNameEl.classList = "list-group-item list-group-item-action list-group-item-primary";
+            cityNameEl.textContent = citiesLocalStorage[i];
+        };
+        alert("All saved cities have been retrieved and populated!");
+    };
+};
+
+// Second fecth call will run as non-async
+function fetchSecondCall(searchByCity, latNum, lonNum, unixTimeCurrentDay, currentDayIcon, currentTempMetric, currentHumidity, currentMPS, mphWindSpeed) {
+
+    let openWeatherApiFiveDayUrl = "https://api.openweathermap.org/data/2.5/onecall?q=" + latNum + "&lon=" + lonNum + "&appid=" + APIKey;
+
+    fetch(
+        openWeatherApiFiveDayUrl
+    )
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (secondCallData) {
+            let uvIndex = secondCallData.current.uvi;
+            let unix_timestamp = unixTimeCurrentDay;
+            var date = new Date(unix_timestamp * 1000);
+            var year = date.getFullYear();
+            var monthOfYear = date.getMonth() + 1;
+            var dayOfMonth = date.getDate();
+            var fullDayDaily = "(" + (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear() + ")";
+
+            populateCurrentDayHtml(searchByCity, fullDayDaily, currentDayIcon, currentTempMetric, currentHumidity, currentMPS, mphWindSpeed, uvIndex);
+
+            populate5DayForecast(secondCallData);
+        });
+};

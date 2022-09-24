@@ -216,3 +216,79 @@ function populate5DayForecast(secondCallData) {
     };
 };
 
+var getWeatherData = function (event, cityClicked) {
+    // Prevent multiple clicks when item entered search bar or cities list
+    event.preventDefault();
+
+    if (cityClicked) {
+        var searchByCity = cityClicked.trim();
+    } else {
+        var searchByCity = searchByCityEl.value.trim();
+    };
+
+    // If the field is empty don't fetch data
+    if (searchByCity == "") {
+        alert("Please enter a city name!");
+        searchByCityEl.value = "";
+        return
+    } else {
+        searchByCityEl.value = "";
+    };
+
+    // Retrieve array from localStorage
+    let citiesLocalStorage = JSON.parse(localStorage.getItem("savedCities"));
+
+    let cityExist = 0;
+
+    if (citiesLocalStorage === null) {
+        citiesSearched = new Array();
+    } else {
+        citiesSearched = citiesLocalStorage;
+    };
+
+    // First API call to fetch data to second API call
+    let openWeatherApiUrl = queryURL;
+
+    fetch(
+        openWeatherApiUrl
+    ).then(function (weatherResponse) {
+        if (weatherResponse.ok) {
+            return weatherResponse.json();
+        } else {
+            window.alert("Error: " + weatherResponse.statusText + "\n Please enter a validy city.");
+            searchByCityEl.value = "";
+            return;
+        }
+    }).then(function (weatherLatLon) {
+        // Data for current day
+        let latNum = weatherLatLon.coord.lat;
+        let lonNum = weatherLatLon.coord.lon;
+        let unixTimeCurrentDay = weatherLatLon.dt;
+        let currentDayIcon = weatherLatLon.weather[0].icon;
+        let currentTempMetric = weatherLatLon.main.temp;
+        let currentHumidity = weatherLatLon.main.humidity;
+        let currentMPS = weatherLatLon.wind.speed;
+        let mphWindSpeed = Math.round(currentMPS * 2.237);
+
+        // Add successfull API call to localStorage
+        // Validate new city
+        for (i = 0; i < citiesSearched.length; i++) {
+            if (searchByCity.toLowerCase() === citiesSearched[i].toLowerCase()) {
+                cityExist = 1;
+                break;
+            };
+        };
+
+        if (cityExist === 0) {
+            citiesSearched.push(searchByCity.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.substring(1)).join(' '));
+            // Save in localStorage
+            localStorage.setItem("savedCities", JSON.stringify(citiesSearched));
+        }
+
+        fetchSecondCall(searchByCity.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.substring(1)).join(' '), latNum, lonNum, unixTimeCurrentDay, currentDayIcon, currentTempMetric, currentHumidity, currentMPS, mphWindSpeed);
+
+        populateSavedCities();
+    }).catch(function(error) {
+        return;
+    });
+};

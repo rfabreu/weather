@@ -112,7 +112,7 @@ function populateCurrentDayHtml(searchByCity, fullDayDaily, currentDayIcon, curr
     currentDayTitle.textContent = (searchByCity.charAt(0).toUpperCase() + searchByCity.slice(1) + " " + fullDayDaily);
 
     let currentIconEl = document.createElement("span");
-    let currentIconSymbol = "http://openweathermap.org/img/wn/"+ currentDayIcon + "@2x.png";
+    let currentIconSymbol = "http://openweathermap.org/img/wn/" + currentDayIcon + "@2x.png";
     currentIconEl.innerHTML = "<img src=" + currentIconSymbol + "></img";
     currentDayTitle.append(currentIconEl);
 
@@ -195,7 +195,7 @@ function populate5DayForecast(secondCallData) {
         iconSpan.textContent = "";
 
         let currentIconEl = document.createElement("span");
-        let currentIconSymbol = "http://openweathermap.org/img/wn/"+ iconWeather + "@2x.png";
+        let currentIconSymbol = "http://openweathermap.org/img/wn/" + iconWeather + "@2x.png";
         currentIconEl.innerHTML = "<img src=" + currentIconSymbol + "></img>";
         iconSpan.append(currentIconEl);
 
@@ -288,7 +288,24 @@ var getWeatherData = function (event, cityClicked) {
         fetchSecondCall(searchByCity.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.substring(1)).join(' '), latNum, lonNum, unixTimeCurrentDay, currentDayIcon, currentTempMetric, currentHumidity, currentMPS, mphWindSpeed);
 
         populateSavedCities();
-    }).catch(function(error) {
+    }).catch(function (error) {
         return;
     });
 };
+
+// Event handler for searching manually
+searchEventHandlerEl.addEventListener("submit", getWeatherData);
+
+// Event handler for cities when clicked from the list
+var cityClicked = function (event) {
+    let cityClicked = event.target.getAttribute("data-city");
+    if (cityClicked) {
+        getWeatherData(event, cityClicked);
+    } else {
+        alert("Internal error found! \n Please email raabreugomes@gmail.com to report.");
+    };
+};
+
+citiesContainerEl.addEventListener("click", cityClicked);
+
+populateSavedCities();

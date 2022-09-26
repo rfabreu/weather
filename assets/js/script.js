@@ -34,7 +34,7 @@ dynFormContainer.appendChild(formInput);
 // Create button element
 let formButton = document.createElement("button");
 formButton.setAttribute("type", "submit");
-formButton.classList("btn fas fa-search");
+formButton.classList = ("btn fas fa-search");
 dynFormContainer.appendChild(formButton);
 
 // Find city form

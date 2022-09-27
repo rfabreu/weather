@@ -79,7 +79,7 @@ var populateSavedCities = function () {
 // Second fecth call will run as non-async
 function fetchSecondCall(searchByCity, latNum, lonNum, unixTimeCurrentDay, currentDayIcon, currentTempMetric, currentHumidity, currentMPS, mphWindSpeed) {
 
-    let openWeatherApiFiveDayUrl = "https://api.openweathermap.org/data/2.5/onecall?q=" + latNum + "&lon=" + lonNum + "&appid=" + APIKey;
+    let openWeatherApiFiveDayUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + latNum + "&lon=" + lonNum + "&appid=f04790a4f07975aa0a32273581fb57ac&units=metric"; //+ APIKey;
 
     fetch(
         openWeatherApiFiveDayUrl
@@ -88,7 +88,7 @@ function fetchSecondCall(searchByCity, latNum, lonNum, unixTimeCurrentDay, curre
             return response.json();
         })
         .then(function (secondCallData) {
-            let uvIndex = secondCallData.current.uvi;
+            let uvIndex = secondCallData.current.uvi; // CHECK THIS LINE = BREAKING
             let unix_timestamp = unixTimeCurrentDay;
             var date = new Date(unix_timestamp * 1000);
             var year = date.getFullYear();
@@ -131,7 +131,7 @@ function populateCurrentDayHtml(searchByCity, fullDayDaily, currentDayIcon, curr
     currentUvIEl.textContent = "UV Index: " + uvIndex;
 
     // Use jQuery to clear all list items
-    $("daily-forecast-container").remove();
+    $("#daily-forecast-container").remove();
 
     // Append daily forecast to forecast-container
     dailyWeatherContainerEl.appendChild(dailyForecastContainerEl);
@@ -257,7 +257,7 @@ var getWeatherData = function (event, cityClicked) {
         if (weatherResponse.ok) {
             return weatherResponse.json();
         } else {
-            window.alert("Error: " + weatherResponse.statusText + "\n Please enter a validy city.");
+            window.alert("Error: " + weatherResponse.statusText + "\nPlease enter a validy city.");
             searchByCityEl.value = "";
             return;
         }
@@ -304,10 +304,10 @@ var cityClicked = function (event) {
     if (cityClicked) {
         getWeatherData(event, cityClicked);
     } else {
-        alert("Internal error found! \n Please email raabreugomes@gmail.com to report.");
+        alert("Internal error found! \nPlease email raabreugomes@gmail.com to report.");
     };
 };
 
-citiesContainerEl.addEventListener("click", cityClicked);
+citiesContainerEl.addEventListener("click", cityClicked)
 
 populateSavedCities();

@@ -14,7 +14,7 @@ let dailyWeatherContainerEl = document.querySelector("#forecast-container");
 
 // Create form container and children child elements
 let dynFormContainer = document.createElement("form");
-dynFormContainer.setAttribute("id", "dynCityForm"); // CHECK THIS LINE LATER ON
+dynFormContainer.setAttribute("id", "dymCityForm"); // CHECK THIS LINE LATER ON
 dynFormContainer.classList = "search-container";
 leftColumnEl.appendChild(dynFormContainer);
 
@@ -38,17 +38,17 @@ formButton.classList = ("btn fas fa-search");
 dynFormContainer.appendChild(formButton);
 
 // Find city form
-let searchEventHandlerEl = document.querySelector("#dynCityForm");
+let searchEventHandlerEl = document.querySelector("#dymCityForm");
 let searchByCityEl = document.querySelector("#city-name");
 
 // Left column container for cities
 let citiesContainerEl = document.createElement("div");
-citiesContainerEl.setAttribute("id", "dyn-cities-list");
+citiesContainerEl.setAttribute("id", "dym-cities-list");
 citiesContainerEl.classList = "list-group";
 leftColumnEl.appendChild(citiesContainerEl);
 
 // Find list div container
-let citiesListContainerEl = document.querySelector("#dyn-cities-list");
+let citiesListContainerEl = document.querySelector("#dym-cities-list");
 
 
 var populateSavedCities = function () {
@@ -70,6 +70,7 @@ var populateSavedCities = function () {
             cityNameEl.setAttribute("role", "button");
             cityNameEl.classList = "list-group-item list-group-item-action list-group-item-primary";
             cityNameEl.textContent = citiesLocalStorage[i];
+            citiesContainerEl.appendChild(cityNameEl);
         };
         alert("All saved cities have been retrieved and populated!");
     };
@@ -247,7 +248,8 @@ var getWeatherData = function (event, cityClicked) {
     };
 
     // First API call to fetch data to second API call
-    let openWeatherApiUrl = queryURL;
+    // let openWeatherApiUrl = queryURL;
+    let openWeatherApiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + searchByCity + "&appid=f04790a4f07975aa0a32273581fb57ac&units=metric";
 
     fetch(
         openWeatherApiUrl

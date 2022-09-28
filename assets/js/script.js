@@ -73,9 +73,9 @@ var populateSavedCities = function () {
 };
 
 // Second fecth call will run as non-async
-function fetchSecondCall(searchByCity, latNum, lonNum, unixTimeCurrentDay, currentDayIcon, currentTempMetric, currentHumidity, currentMPS, mphWindSpeed) {
+function fetchSecondCall(searchByCity, latNum, lonNum, unixTimeCurrentDay, currentDayIcon, currentTempMetric, currentHumidity, currentMPS, kmhWindSpeed) {
 
-    let openWeatherApiFiveDayUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + latNum + "&lon=" + lonNum + "&appid=" + APIKey + "&units=metric"; //+ APIKey;
+    let openWeatherApiFiveDayUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + latNum + "&lon=" + lonNum + "&appid=" + APIKey + "&units=metric";
 
     fetch(
         openWeatherApiFiveDayUrl
@@ -92,14 +92,14 @@ function fetchSecondCall(searchByCity, latNum, lonNum, unixTimeCurrentDay, curre
             var dayOfMonth = date.getDate();
             var fullDayDaily = "(" + (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear() + ")";
 
-            populateCurrentDayHtml(searchByCity, fullDayDaily, currentDayIcon, currentTempMetric, currentHumidity, currentMPS, mphWindSpeed, uvIndex);
+            populateCurrentDayHtml(searchByCity, fullDayDaily, currentDayIcon, currentTempMetric, currentHumidity, currentMPS, kmhWindSpeed, uvIndex);
 
             populate5DayForecast(secondCallData);
         });
 };
 
 // Function to populate forecast for the current day
-function populateCurrentDayHtml(searchByCity, fullDayDaily, currentDayIcon, currentTempMetric, currentHumidity, currentMPS, mphWindSpeed, uvIndex) {
+function populateCurrentDayHtml(searchByCity, fullDayDaily, currentDayIcon, currentTempMetric, currentHumidity, currentMPS, kmhWindSpeed, uvIndex) {
     // Populate current day html elements
     let dailyForecastContainerEl = document.createElement("div");
     dailyForecastContainerEl.setAttribute("id", "daily-forecast-container");
@@ -123,7 +123,7 @@ function populateCurrentDayHtml(searchByCity, fullDayDaily, currentDayIcon, curr
     // Injects <h> elements text content
     currentTempEl.textContent = "Temperature: " + (currentTempMetric.toFixed(1)) + " ˚C";
     currentHumidityEl.textContent = "Humidity: " + currentHumidity + "%";
-    currentWindSpeedEl.textContent = "Wind Speed: " + currentMPS + " MPH";
+    currentWindSpeedEl.textContent = "Wind Speed: " + kmhWindSpeed + " Km/h";
     currentUvIEl.textContent = "UV Index: " + uvIndex;
 
     // Use jQuery to clear all list items
@@ -244,7 +244,6 @@ var getWeatherData = function (event, cityClicked) {
     };
 
     // First API call to fetch data to second API call
-    // let openWeatherApiUrl = queryURL;
     let openWeatherApiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + searchByCity + "&appid=" + APIKey + "&units=metric";
 
     fetch(
@@ -266,7 +265,7 @@ var getWeatherData = function (event, cityClicked) {
         let currentTempMetric = weatherLatLon.main.temp;
         let currentHumidity = weatherLatLon.main.humidity;
         let currentMPS = weatherLatLon.wind.speed;
-        let mphWindSpeed = Math.round(currentMPS * 2.237);
+        let kmhWindSpeed = Math.round(currentMPS * 2.309344);
 
         // Add successfull API call to localStorage
         // Validate new city
@@ -283,7 +282,7 @@ var getWeatherData = function (event, cityClicked) {
             localStorage.setItem("savedCities", JSON.stringify(citiesSearched));
         }
 
-        fetchSecondCall(searchByCity.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.substring(1)).join(' '), latNum, lonNum, unixTimeCurrentDay, currentDayIcon, currentTempMetric, currentHumidity, currentMPS, mphWindSpeed);
+        fetchSecondCall(searchByCity.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.substring(1)).join(' '), latNum, lonNum, unixTimeCurrentDay, currentDayIcon, currentTempMetric, currentHumidity, currentMPS, kmhWindSpeed);
 
         populateSavedCities();
     }).catch(function (error) {

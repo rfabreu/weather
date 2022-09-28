@@ -1,9 +1,5 @@
-var APIKey = "f04790a4f07975aa0a32273581fb57ac";
-var city;
-var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey + "&units=metric";
+var APIKey = "32a27c42260b02de3ba5e1466def4861";
 
-// Makes call to the API data => Keep to use later
-// fetch(queryURL)
 
 // Get form element value
 let leftColumnEl = document.querySelector("#left-column");
@@ -79,7 +75,7 @@ var populateSavedCities = function () {
 // Second fecth call will run as non-async
 function fetchSecondCall(searchByCity, latNum, lonNum, unixTimeCurrentDay, currentDayIcon, currentTempMetric, currentHumidity, currentMPS, mphWindSpeed) {
 
-    let openWeatherApiFiveDayUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + latNum + "&lon=" + lonNum + "&appid=f04790a4f07975aa0a32273581fb57ac&units=metric"; //+ APIKey;
+    let openWeatherApiFiveDayUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + latNum + "&lon=" + lonNum + "&appid=" + APIKey + "&units=metric"; //+ APIKey;
 
     fetch(
         openWeatherApiFiveDayUrl
@@ -88,7 +84,7 @@ function fetchSecondCall(searchByCity, latNum, lonNum, unixTimeCurrentDay, curre
             return response.json();
         })
         .then(function (secondCallData) {
-            let uvIndex = secondCallData.current.uvi; // CHECK THIS LINE = BREAKING
+            let uvIndex = secondCallData.current.uvi; // LINE TO BE LOOKED INTO
             let unix_timestamp = unixTimeCurrentDay;
             var date = new Date(unix_timestamp * 1000);
             var year = date.getFullYear();
@@ -249,7 +245,7 @@ var getWeatherData = function (event, cityClicked) {
 
     // First API call to fetch data to second API call
     // let openWeatherApiUrl = queryURL;
-    let openWeatherApiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + searchByCity + "&appid=f04790a4f07975aa0a32273581fb57ac&units=metric";
+    let openWeatherApiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + searchByCity + "&appid=" + APIKey + "&units=metric";
 
     fetch(
         openWeatherApiUrl

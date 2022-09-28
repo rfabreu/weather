@@ -68,7 +68,7 @@ var populateSavedCities = function () {
             cityNameEl.textContent = citiesLocalStorage[i];
             citiesContainerEl.appendChild(cityNameEl);
         };
-        alert("All saved cities have been retrieved and populated!");
+        // alert("All saved cities have been retrieved and populated!");
     };
 };
 

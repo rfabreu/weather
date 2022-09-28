@@ -60,6 +60,41 @@ input:focus, textarea:focus, select:focus {
     color: #FFD700;
 }
 
+.borderDiv {
+    background-color: white;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-bottom: 18px;
+    border: groove rgba(102, 102, 153, 0.2);
+}
+
+.border-Div-right-column {
+    background-color: white;
+    padding-left: 3px;
+    padding-right: 3px;
+    margin-bottom: 10px;
+}
+
 .list-group {
     margin-bottom: 10px;
+}
+
+.weekly-flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.border-div-five-day-forecast {
+    background-color: dodgerblue;
+    color: white;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-bottom: 18px;
+    border: groove rgba(102, 102, 153, 0.2);
+}
+
+.forecast-padding {
+    padding-bottom: 10px;
 }
